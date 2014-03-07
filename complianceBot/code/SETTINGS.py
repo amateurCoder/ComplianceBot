@@ -1,0 +1,2 @@
+#file_name = "/home/ankitsul/Courses/AIR/project/graphML/infochimps_enron-email-data-with-manager-subordinate-relationship-metadata/Enron_Dataset_v0.12.graphml"
+file_name = "/home/ankitsul/Courses/AIR/project/graphML/infochimps_enron-email-data-with-manager-subordinate-relationship-metadata/test.xml"
