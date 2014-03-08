@@ -1,28 +1,33 @@
 from Message import Message
 from EmailAddress import EmailAddress
 from Person import Person
+from Edge import Edge
 
 def extract_data(tree):
+    GRAPH = "{http://graphml.graphdrawing.org/xmlns}graph"
+    NODE = "{http://graphml.graphdrawing.org/xmlns}node"
+    EDGE = "{http://graphml.graphdrawing.org/xmlns}edge"
+    DATA = "{http://graphml.graphdrawing.org/xmlns}data"
+
     email_address_nodes = {}
     message_nodes = {}
     person_nodes = {}
+    edges = {}
     
     #'graphml' level
     root = tree.getroot()
+
     #'graph' level
     for element in root:
-        if element.tag == 'graph':
-            print element.tag, element.attrib
+        if element.tag == GRAPH:
+            
             #'node' and 'edge' level
             for node in element:
-                if node.tag == 'node':
+                if node.tag == NODE:
                     node_id = node.get('id')
-                    epoch_secs = body = email_id = subject = None
-                    datetime = None
-                    
-                    #retrieving values from all field
-                    for data in node.findall('data'):
-                        
+                    epoch_secs = body = email_id = subject = datetime = None
+                    for data in node.findall(DATA):
+
                         #Email Address related fields
                         if data.get('key') == 'address':
                             address = data.text
@@ -43,28 +48,48 @@ def extract_data(tree):
                         
                         #Person related fields
                         elif data.get('key') == 'lastName':
-                            lastname = data.text    
+                            lastname = data.text
                         elif data.get('key') == 'firstName':
                             firstname = data.text
                         elif data.get('key') == 'provenance':
                             provenance = data.text
                                 
                     #Checking the message type
-                    for data in node.findall('data'):
+                    for data in node.findall(DATA):
                         if data.get('key') == 'type' and data.text == 'Email Address':
-                            new_node = EmailAddress(node_id, address, fully_observed)
+                            email_new_node = EmailAddress(node_id, address, fully_observed)
+
                             #Saving into dictionary with node_id as key
-                            email_address_nodes[new_node._node_id] = new_node
+                            email_address_nodes[email_new_node._node_id] = email_new_node
                         elif data.get('key') == 'type' and data.text == 'Message':
-                            new_node = Message(node_id, datetime, epoch_secs, subject, body, email_id)
+                            message_new_node = Message(node_id, datetime, epoch_secs, subject, body, email_id)
+
                             #Saving into dictionary with node_id as key
-                            message_nodes[new_node._node_id] = new_node
+                            message_nodes[message_new_node._node_id] = message_new_node
                         elif data.get('key') == 'type' and data.text == 'Person':
-                            new_node = Person(node_id, lastname, firstname, provenance)
+                            person_new_node = Person(node_id, lastname, firstname, provenance)
+
                             #Saving into dictionary with node_id as key
-                            person_nodes[new_node._node_id] = new_node    
+                            person_nodes[person_new_node._node_id] = person_new_node    
+
+                elif node.tag == EDGE:
+                    edge_id = node.get('id')
+                    edge_source = node.get('source')
+                    edge_target = node.get('target')
+                    edge_label = node.get('label')
+                     
+                    epoch_secs = order = datetime = edge_type = None
+                    for data in node.findall(DATA):
+                        if data.get('key') == 'epochSecs':
+                            epoch_secs = data.text
+                        elif data.get('key') == 'order':
+                            order = data.text
+                        elif data.get('key') == 'datetime':
+                            datetime = data.text
+                        elif data.get('key') == 'type':
+                            edge_type = data.text    
+                                      
+                    new_edge = Edge(edge_id, edge_source, edge_target, edge_label, epoch_secs, order, datetime, edge_type)
+                    edges[new_edge._edge_id] = new_edge
                         
-                    
-                    #print new_node._node_id, new_node._epoch_secs, new_node._body, new_node._email_id, new_node._subject, new_node._datetime
-                    
-    return message_nodes, email_address_nodes, person_nodes
+    return message_nodes, email_address_nodes, person_nodes, edges

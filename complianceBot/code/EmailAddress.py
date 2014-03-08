@@ -6,11 +6,11 @@ class EmailAddress(object):
         self._fully_observed = fully_observed
         
     @property
-    def id(self):
+    def node_id(self):
         return self._node_id
     
-    @id.setter
-    def id(self, node_id):
+    @node_id.setter
+    def node_id(self, node_id):
         self._node_id = node_id   
             
     @property
