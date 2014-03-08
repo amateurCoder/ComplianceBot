@@ -1,6 +1,6 @@
 class Edge(object):
     
-    def __init__(self, edge_id, source, target, label, epoch_secs, order, datetime, edge_type):
+    def __init__(self, edge_id, source, target, label, epoch_secs, order, datetime, edge_type, start_datetime, end_datetime, evidence_type):
         self._edge_id = edge_id
         self._source = source
         self._target = target
@@ -9,6 +9,9 @@ class Edge(object):
         self._order = order
         self._datetime = datetime
         self._edge_type = edge_type 
+        self._start_datetime = start_datetime
+        self._end_datetime = end_datetime
+        self._evidence_type = evidence_type
         
     @property
     def edge_id(self):
@@ -72,5 +75,29 @@ class Edge(object):
     
     @edge_type.setter
     def edge_type(self, edge_type):
-        self._edge_type = edge_type      
+        self._edge_type = edge_type    
+        
+    @property
+    def start_datetime(self):
+        return self._start_datetime
+    
+    @start_datetime.setter
+    def start_datetime(self, start_datetime):
+        self._start_datetime = start_datetime      
+        
+    @property
+    def end_datetime(self):
+        return self._end_datetime
+    
+    @end_datetime.setter
+    def end_datetime(self, end_datetime):
+        self._end_datetime = end_datetime      
+
+    @property
+    def evidence_type(self):
+        return self._evidence_type
+    
+    @evidence_type.setter
+    def evidence_type(self, evidence_type):
+        self._evidence_type = evidence_type       
     
