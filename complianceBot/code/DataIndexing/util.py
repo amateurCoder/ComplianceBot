@@ -40,9 +40,11 @@ def extract_data(tree):
                         elif data.get('key') == 'epochSecs':
                             epoch_secs = data.text
                         elif data.get('key') == 'subject':
-                            subject = data.text    
+                            subject = clean_data(data.text)
+#                             subject = data.text    
                         elif data.get('key') == 'body':
-                            body = data.text
+                            body = clean_data(data.text)
+#                             body = data.text
                         elif data.get('key') == 'emailID':
                             email_id = data.text
                         
@@ -100,3 +102,6 @@ def extract_data(tree):
                     edges[new_edge._edge_id] = new_edge
                         
     return message_nodes, email_address_nodes, person_nodes, edges
+
+def clean_data():
+    pass

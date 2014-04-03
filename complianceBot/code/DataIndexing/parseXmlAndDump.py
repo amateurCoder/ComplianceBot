@@ -5,7 +5,7 @@ import SETTINGS
 
 import util
 
-def read_data():
+def read_and_dump_data():
     tree = ET.parse(SETTINGS.file_name)
     message_nodes, email_address_nodes, person_nodes, edges = util.extract_data(tree)
     
@@ -15,12 +15,6 @@ def read_data():
     pickle.dump(person_nodes, open("personObjectFile.p", "wb"))
     pickle.dump(edges, open("edgeObjectFile.p", "wb"))
 
-#TODO: Indexing to Solr in a specified format    
-#     message_loaded_nodes = pickle.load(open("messageObjectFile.p", "rb"))
-#     email_address_loaded_nodes = pickle.load(open("emailObjectFile.p", "rb"))
-#     person_loaded_nodes = pickle.load(open("personObjectFile.p", "rb"))
-#     
-    
     #for key, value in message_loaded_nodes.iteritems():
         #print loaded_node._node_id, loaded_node._epoch_secs, loaded_node._body, loaded_node._email_id, loaded_node._subject, loaded_node._datetime
         #print key, value._epoch_secs
@@ -28,4 +22,4 @@ def read_data():
 
 
 if __name__=="__main__":
-    read_data()
+    read_and_dump_data()
