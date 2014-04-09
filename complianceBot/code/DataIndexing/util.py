@@ -1,3 +1,6 @@
+import re
+import SETTINGS
+
 from Message import Message
 from EmailAddress import EmailAddress
 from Person import Person
@@ -40,11 +43,11 @@ def extract_data(tree):
                         elif data.get('key') == 'epochSecs':
                             epoch_secs = data.text
                         elif data.get('key') == 'subject':
-                            subject = clean_data(data.text)
-#                             subject = data.text    
+#                             subject = clean_data(data.text)
+                            subject = data.text    
                         elif data.get('key') == 'body':
-                            body = clean_data(data.text)
-#                             body = data.text
+#                             body = clean_data(data.text)
+                            body = data.text
                         elif data.get('key') == 'emailID':
                             email_id = data.text
                         
@@ -103,5 +106,37 @@ def extract_data(tree):
                         
     return message_nodes, email_address_nodes, person_nodes, edges
 
-def clean_data():
-    pass
+
+def clean_data(text):
+    # Removing special characters
+    text = re.sub("[\n\t\-\*\+\$\"\\\(\)]+", " ", text)
+    text = re.sub("<<", " ", text)
+    # Removing tags
+    text = re.sub('(<[^<]+>|<<[^<<]+>>)', "", text)
+    # Removing time
+    text = re.sub('([\d]+:\d\d) (AM|PM)', "", text)
+    # Removing date
+    text = re.sub('([\d]+/[\d]+/[\d]+)', "", text)
+    text = re.sub('([\d]+\.[\d]+\.[\d]+)', "", text)
+    text = re.sub('(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday){0,1},? (January|February|March|April|May|June|July|August|September|October|November|December){0,} [\d]*,? ?[\d]*', " ", text)
+    # Removing labels
+    text = re.sub('(From:|To:|Sent:|Cc:|cc:|Bcc:|RE:|Re:|FWD:|Subject:|Original Message)', "", text)
+    # Removing urls
+    text = re.sub('https?:\/\/.*? ', '', text)
+    # Removing punctuations
+    text = re.sub('[;\,\?\.\:\!]', " ", text)
+    # Removing numbers
+    text = re.sub('(0|1|2|3|4|5|6|7|8|9){1,}', "", text)
+    # Removing email address
+    
+    # Removing rest
+    text = re.sub('[/@]', " ", text)
+    #Removing apostrophe
+    text = re.sub("'s", "", text)
+    
+    # Removing stop words
+    f = open(SETTINGS.stop_words_file)
+    stop_words = f.read().splitlines()
+    text = " ".join(word for word in text.split() if word.lower() not in stop_words)
+    
+    return text

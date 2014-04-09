@@ -2,6 +2,7 @@ import pickle
 import sunburnt
 
 import SETTINGS
+from util import clean_data
 
 def load_filter_words():
     drinks_words = read_file(SETTINGS.drinks_file)
@@ -75,7 +76,7 @@ def index_message():
         if is_filter_word_present(text, filter_words):
             compliantFlag = False 
 
-        doc = {"nodeId":key, "datetime":value._datetime, "epochSecs":value._epoch_secs, "subject":value._subject, "body":value._body, "emailId":value._email_id,"compliantFlag":compliantFlag}
+        doc = {"nodeId":key, "datetime":value._datetime, "epochSecs":value._epoch_secs, "subject":value._subject, "body":clean_data(value._body), "emailId":value._email_id,"compliantFlag":compliantFlag}
         docs.append(doc)
         
     sPerson.add(docs)

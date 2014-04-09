@@ -13,3 +13,6 @@ message_object_file = "/home/ankitsul/Courses/AIR/project/Enron/objectFiles/mess
 email_object_file = "/home/ankitsul/Courses/AIR/project/Enron/objectFiles/emailObjectFile.p"
 person_object_file = "/home/ankitsul/Courses/AIR/project/Enron/objectFiles/personObjectFile.p"
 edge_object_file = "/home/ankitsul/Courses/AIR/project/Enron/objectFiles/edgeObjectFile.p"
+
+#path for stop words file
+stop_words_file = "/home/ankitsul/Courses/AIR/project/Enron/traning/stopWords.txt"
