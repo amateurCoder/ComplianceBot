@@ -77,6 +77,7 @@ def index_message():
             compliantFlag = False 
 
         doc = {"nodeId":key, "datetime":value._datetime, "epochSecs":value._epoch_secs, "subject":value._subject, "body":clean_data(value._body), "emailId":value._email_id,"compliantFlag":compliantFlag}
+#         doc = {"nodeId":key, "datetime":value._datetime, "epochSecs":value._epoch_secs, "subject":value._subject, "body":value._body, "emailId":value._email_id,"compliantFlag":compliantFlag}
         docs.append(doc)
         
     sPerson.add(docs)
@@ -86,8 +87,8 @@ def index_message():
 #To check if the body or subject of message contains a non-compliant word         
 def is_filter_word_present(text, filter_words):
     for word in filter_words:
-#         if word in text:
-        if word in (wordText.lower() for wordText in text):
+        if word.lower() in text.lower().split():
+#         if word in (wordText.lower() for wordText in text):
             return True
 
         

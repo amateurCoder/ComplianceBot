@@ -109,10 +109,14 @@ def extract_data(tree):
 
 def clean_data(text):
     # Removing special characters
-    text = re.sub("[\n\t\-\*\+\$\"\\\(\)]+", " ", text)
-    text = re.sub("<<", " ", text)
+    text = re.sub("[\n\t\-\*\+\$\"\\\(\)\_\=]+", " ", text)
+    
     # Removing tags
     text = re.sub('(<[^<]+>|<<[^<<]+>>)', "", text)
+    text = re.sub("<<", " ", text)
+    text = re.sub(">>", " ", text)
+    text = re.sub("(<|>|#)", " ", text)
+    
     # Removing time
     text = re.sub('([\d]+:\d\d) (AM|PM)', "", text)
     # Removing date
@@ -131,12 +135,14 @@ def clean_data(text):
     
     # Removing rest
     text = re.sub('[/@]', " ", text)
-    #Removing apostrophe
     text = re.sub("'s", "", text)
-    
+    text = re.sub("\'", "", text)
+    text = re.sub("\|", "", text)
+    text = re.sub("\[image\]", "", text)
     # Removing stop words
     f = open(SETTINGS.stop_words_file)
     stop_words = f.read().splitlines()
     text = " ".join(word for word in text.split() if word.lower() not in stop_words)
+
     
     return text
